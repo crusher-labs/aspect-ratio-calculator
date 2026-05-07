@@ -1,0 +1,126 @@
+/*
+ * Local copy of the Crusher UI Kit static tool shell.
+ * Remove this file after a published crusher-ui-kit release exposes
+ * dist/static/tool-shell.css on the CDN.
+ */
+
+:root {
+  --crusher-tool-shell-max-width: 76rem;
+  --crusher-tool-shell-padding: clamp(var(--crusher-spacing-4), 4vw, var(--crusher-spacing-8));
+  --crusher-tool-shell-gap: var(--crusher-spacing-6);
+  --crusher-tool-shell-card-min: 16rem;
+  --crusher-style-switcher-top: var(--crusher-spacing-6);
+  --crusher-style-switcher-bg: color-mix(in srgb, var(--crusher-background-surface) 94%, transparent);
+  --crusher-style-switcher-shadow: var(--crusher-shadow-xl);
+  --crusher-style-switcher-icon-shadow: var(--crusher-shadow-md);
+  --crusher-style-switcher-color-gap: var(--crusher-spacing-2);
+  --crusher-style-switcher-color-justify: flex-start;
+}
+
+html[data-mode="dark"] {
+  color-scheme: dark;
+}
+
+.crusher-tool-page {
+  min-block-size: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--crusher-color-brand-primary) 14%, transparent), transparent 28rem),
+    var(--crusher-background-canvas);
+  color: var(--crusher-text-primary);
+}
+
+.crusher-tool-shell {
+  width: min(100%, var(--crusher-tool-shell-max-width));
+  margin-inline: auto;
+  padding: var(--crusher-tool-shell-padding);
+}
+
+.crusher-tool-header {
+  display: grid;
+  gap: var(--crusher-spacing-3);
+  margin-block: var(--crusher-spacing-8);
+  text-align: center;
+}
+
+.crusher-tool-title {
+  margin: 0;
+  color: var(--crusher-text-primary);
+  font-size: clamp(var(--crusher-font-size-3xl), 6vw, var(--crusher-font-size-5xl));
+  line-height: var(--crusher-line-height-tight);
+}
+
+.crusher-tool-lede {
+  max-width: 42rem;
+  margin: 0 auto;
+  color: var(--crusher-text-secondary);
+}
+
+.crusher-tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--crusher-tool-shell-card-min)), 1fr));
+  gap: var(--crusher-tool-shell-gap);
+}
+
+.crusher-tool-surface,
+.crusher-tool-card {
+  border: var(--crusher-component-border-weight) solid var(--crusher-border-primary);
+  border-radius: var(--crusher-radius-xl);
+  background: var(--crusher-background-surface);
+  box-shadow: var(--crusher-shadow-lg);
+}
+
+.crusher-tool-muted {
+  color: var(--crusher-text-secondary);
+}
+
+.crusher-tool-control {
+  width: 100%;
+  border: var(--crusher-component-border-weight) solid var(--crusher-border-primary);
+  border-radius: var(--crusher-radius-lg);
+  background: var(--crusher-background-muted);
+  color: var(--crusher-text-primary);
+}
+
+.crusher-tool-control:focus {
+  border-color: var(--crusher-color-brand-primary);
+  box-shadow: 0 0 0 var(--crusher-focus-width) color-mix(in srgb, var(--crusher-color-brand-primary) 26%, transparent);
+  outline: none;
+}
+
+.crusher-tool-action {
+  border: var(--crusher-component-border-weight) solid color-mix(in srgb, var(--crusher-color-brand-primary) 28%, var(--crusher-border-primary));
+  border-radius: var(--crusher-radius-lg);
+  background: color-mix(in srgb, var(--crusher-color-brand-primary) 12%, var(--crusher-background-surface));
+  color: var(--crusher-text-primary);
+  cursor: pointer;
+}
+
+.crusher-tool-action:hover {
+  border-color: var(--crusher-color-brand-primary);
+  background: color-mix(in srgb, var(--crusher-color-brand-primary) 18%, var(--crusher-background-surface));
+}
+
+.crusher-tool-fab {
+  position: fixed;
+  inset-inline-end: var(--crusher-spacing-5);
+  inset-block-end: var(--crusher-spacing-5);
+  z-index: var(--crusher-z-dropdown);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--crusher-spacing-14);
+  block-size: var(--crusher-spacing-14);
+  border-radius: var(--crusher-radius-full);
+  background: var(--crusher-color-brand-primary);
+  color: var(--crusher-color-base-white);
+  box-shadow: var(--crusher-shadow-lg);
+  transition:
+    transform var(--crusher-motion-duration-fast) var(--crusher-motion-easing-standard),
+    background-color var(--crusher-motion-duration-fast) var(--crusher-motion-easing-standard);
+}
+
+.crusher-tool-fab:hover {
+  transform: translateY(-2px) scale(1.03);
+  background: color-mix(in srgb, var(--crusher-color-brand-primary) 82%, black);
+}

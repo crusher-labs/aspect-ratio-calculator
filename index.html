@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en" data-theme="minimal" data-mode="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aspect Ratio Calculator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.1/dist/crusher-ui.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.1/dist/themes/minimal.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.1/dist/themes/glass.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.1/dist/themes/brutal.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.1/dist/themes/neumorph.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.1/dist/themes/neobrutal.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.1/dist/themes/futuristic.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.1/dist/themes/bento.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.1/dist/static/tool-shell.css" />
+    <style>
+      .ratio-layout {
+        display: grid;
+        gap: var(--crusher-spacing-6);
+      }
+
+      .ratio-form {
+        display: grid;
+        gap: var(--crusher-spacing-4);
+        padding: var(--crusher-spacing-6);
+      }
+
+      .ratio-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--crusher-spacing-4);
+      }
+
+      .ratio-field {
+        display: grid;
+        gap: var(--crusher-spacing-2);
+      }
+
+      .ratio-field label {
+        color: var(--crusher-text-secondary);
+        font-size: var(--crusher-font-size-sm);
+        font-weight: var(--crusher-font-weight-semibold);
+      }
+
+      .ratio-field input,
+      .ratio-field select {
+        min-height: var(--crusher-spacing-12);
+        padding: 0 var(--crusher-spacing-3);
+      }
+
+      .ratio-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--crusher-spacing-3);
+      }
+
+      .ratio-actions button {
+        min-height: var(--crusher-spacing-12);
+        padding: 0 var(--crusher-spacing-5);
+      }
+
+      .ratio-result {
+        display: grid;
+        gap: var(--crusher-spacing-3);
+        padding: var(--crusher-spacing-6);
+      }
+
+      .ratio-output {
+        margin: 0;
+        color: var(--crusher-text-primary);
+        font-size: var(--crusher-font-size-3xl);
+        font-weight: var(--crusher-font-weight-bold);
+      }
+
+      .ratio-preview-wrap {
+        display: grid;
+        min-height: 18rem;
+        place-items: center;
+        padding: var(--crusher-spacing-6);
+      }
+
+      .ratio-preview {
+        display: grid;
+        width: min(100%, 28rem);
+        max-height: 18rem;
+        place-items: center;
+        border: var(--crusher-component-border-weight) dashed var(--crusher-border-primary);
+        border-radius: var(--crusher-radius-lg);
+        background:
+          linear-gradient(135deg, color-mix(in srgb, var(--crusher-color-brand-primary) 18%, transparent), transparent),
+          var(--crusher-background-muted);
+        color: var(--crusher-text-secondary);
+        aspect-ratio: 16 / 9;
+      }
+
+      @media (max-width: 42rem) {
+        .ratio-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body class="crusher-tool-page">
+    <main class="crusher-tool-shell">
+      <header class="crusher-tool-header">
+        <h1 class="crusher-tool-title">Aspect Ratio Calculator</h1>
+        <p class="crusher-tool-lede">Calculate matching width, height, and reduced aspect ratios for images, videos, and responsive layouts.</p>
+      </header>
+
+      <section class="ratio-layout">
+        <div class="crusher-tool-surface ratio-form">
+          <div class="ratio-row">
+            <div class="ratio-field">
+              <label for="width">Width</label>
+              <input id="width" class="crusher-tool-control" type="number" min="1" step="1" value="1920" />
+            </div>
+            <div class="ratio-field">
+              <label for="height">Height</label>
+              <input id="height" class="crusher-tool-control" type="number" min="1" step="1" value="1080" />
+            </div>
+          </div>
+
+          <div class="ratio-row">
+            <div class="ratio-field">
+              <label for="ratio">Common ratio</label>
+              <select id="ratio" class="crusher-tool-control">
+                <option value="">Use current dimensions</option>
+                <option value="16:9">16:9 widescreen</option>
+                <option value="4:3">4:3 standard</option>
+                <option value="1:1">1:1 square</option>
+                <option value="3:2">3:2 photo</option>
+                <option value="9:16">9:16 vertical</option>
+                <option value="21:9">21:9 ultrawide</option>
+              </select>
+            </div>
+            <div class="ratio-field">
+              <label for="lock">Calculate from</label>
+              <select id="lock" class="crusher-tool-control">
+                <option value="width">Width</option>
+                <option value="height">Height</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ratio-actions">
+            <button id="calculate" class="crusher-tool-action" type="button">Calculate</button>
+            <button id="swap" class="crusher-tool-action" type="button">Swap</button>
+            <button id="copy" class="crusher-tool-action" type="button">Copy Ratio</button>
+          </div>
+        </div>
+
+        <div class="crusher-tool-grid">
+          <section class="crusher-tool-surface ratio-result" aria-live="polite">
+            <p class="crusher-tool-muted">Reduced ratio</p>
+            <p id="ratio-output" class="ratio-output">16:9</p>
+            <p id="dimension-output" class="crusher-tool-muted">1920 x 1080</p>
+          </section>
+
+          <section class="crusher-tool-surface ratio-preview-wrap">
+            <div id="preview" class="ratio-preview">
+              <span id="preview-label">16:9</span>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <a href="https://tools.muhammadhassaanjaved.com/" class="crusher-tool-fab" title="View all tools" aria-label="View all tools">
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+    </a>
+
+    <crusher-style-switcher default-theme="minimal"></crusher-style-switcher>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.1/dist/crusher-ui.standalone.esm.js"></script>
+    <script>
+      const widthInput = document.getElementById('width');
+      const heightInput = document.getElementById('height');
+      const ratioSelect = document.getElementById('ratio');
+      const lockSelect = document.getElementById('lock');
+      const ratioOutput = document.getElementById('ratio-output');
+      const dimensionOutput = document.getElementById('dimension-output');
+      const preview = document.getElementById('preview');
+      const previewLabel = document.getElementById('preview-label');
+
+      const gcd = (a, b) => {
+        while (b) [a, b] = [b, a % b];
+        return Math.abs(a);
+      };
+
+      const getNumbers = () => ({
+        width: Math.max(1, Math.round(Number(widthInput.value) || 1)),
+        height: Math.max(1, Math.round(Number(heightInput.value) || 1))
+      });
+
+      const applyRatio = () => {
+        const selected = ratioSelect.value;
+        if (!selected) return;
+        const [ratioWidth, ratioHeight] = selected.split(':').map(Number);
+        const { width, height } = getNumbers();
+
+        if (lockSelect.value === 'width') {
+          heightInput.value = Math.round((width / ratioWidth) * ratioHeight);
+        } else {
+          widthInput.value = Math.round((height / ratioHeight) * ratioWidth);
+        }
+      };
+
+      const update = () => {
+        applyRatio();
+        const { width, height } = getNumbers();
+        const divisor = gcd(width, height) || 1;
+        const reducedWidth = width / divisor;
+        const reducedHeight = height / divisor;
+        const label = `${reducedWidth}:${reducedHeight}`;
+
+        ratioOutput.textContent = label;
+        dimensionOutput.textContent = `${width} x ${height}`;
+        preview.style.aspectRatio = `${reducedWidth} / ${reducedHeight}`;
+        previewLabel.textContent = label;
+      };
+
+      document.getElementById('calculate').addEventListener('click', update);
+      document.getElementById('swap').addEventListener('click', () => {
+        const width = widthInput.value;
+        widthInput.value = heightInput.value;
+        heightInput.value = width;
+        ratioSelect.value = '';
+        update();
+      });
+      document.getElementById('copy').addEventListener('click', async () => {
+        await navigator.clipboard.writeText(ratioOutput.textContent);
+      });
+
+      [widthInput, heightInput, ratioSelect, lockSelect].forEach((control) => {
+        control.addEventListener('input', update);
+        control.addEventListener('change', update);
+      });
+
+      update();
+    </script>
+  </body>
+</html>
